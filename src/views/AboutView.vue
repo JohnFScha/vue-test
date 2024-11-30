@@ -2,12 +2,6 @@
   <AboutPage />
 </template>
  
-<script lang="ts">
+<script lang="ts" setup>
 import AboutPage from "../components/AboutPage.vue";
-export default {
-  name: "AboutView",
-  components: {
-    AboutPage
-  }
-}
 </script>
