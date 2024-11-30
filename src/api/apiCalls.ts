@@ -1,4 +1,5 @@
-import { Result } from "@/types";
+import { Result } from "@/types/characters";
+import { ResultComics } from "@/types/comics";
 
 const API_BASE_URL = process.env.VUE_APP_BASE_URL;
 const API_KEY = process.env.VUE_APP_API_KEY;
@@ -31,7 +32,7 @@ async function searchComicByIdAPI(id: string): Promise<Result[] | []> {
   }
 }
 
-async function searchComicByCharacterIdAPI(id: string): Promise<Result[] | []> {
+async function searchComicByCharacterIdAPI(id: string): Promise<ResultComics[] | []> {
   try {
     const response = await fetch(`${API_BASE_URL}/characters/${id}/comics?apikey=${API_KEY}`);
     if (!response.ok) {
@@ -52,7 +53,8 @@ async function searchByNameAPI(name: string): Promise<Result[] | []> {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    return data.data.results;
+    return data.data.results.filter((elem: any) => !elem.thumbnail.path.includes("image_not_available"));
+
   } catch (error) {
     console.error("Error searching character by name:", error);
     return [];

@@ -1,31 +1,30 @@
 <template>
-  <div>
-    <h1>Marvel Characters</h1>
-    <input v-model="searchQuery" @input="searchCharacters" placeholder="Search characters by name" />
+  <HeaderComponent @updateCharacters="refreshCharacterList" />
+  <main class="bg-base-300 min-h-screen">
     <CharactersList :characters="characters" />
-  </div>
+  </main>
 </template>
 
 <script lang="ts" setup>
-import { Ref, ref } from "vue";
+import { ref } from "vue";
 import { getCharactersAPI, searchByNameAPI } from "../api/apiCalls";
-import { Result } from "@/types";
+import { Result } from "@/types/characters";
 import CharactersList from "../components/CharactersList.vue";
+import HeaderComponent from "@/components/HeaderComponent.vue";
 
-const characters: Ref<Result[] | []> = ref([]);
-const searchQuery = ref("");
+const characters = ref<Result[]>([]);
 
 async function fetchCharacters() {
   characters.value = await getCharactersAPI();
 }
 
-async function searchCharacters() {
-  if (searchQuery.value.trim() === "") {
-    fetchCharacters();
+fetchCharacters();
+
+async function refreshCharacterList(searchQuery: string) {
+  if (searchQuery.trim() === "") {
+    await fetchCharacters();
   } else {
-    characters.value = await searchByNameAPI(searchQuery.value);
+    characters.value = await searchByNameAPI(searchQuery);
   }
 }
-
-fetchCharacters();
 </script>
