@@ -1,10 +1,10 @@
 <template>
-  <div class="container">
-    <h3 class="count">{{ counter }}</h3>
-    <div class="sub-container">
-      <button @click="addCounter" class="btn add">Add count!</button>
-      <button @click="removeCounter" class="btn remove">Remove count!</button>
-      <button @click="resetCounter" class="btn reset">Reset count!</button>
+  <div class="card border w-fit m-auto p-2 justify-center items-center">
+    <h3 class="text-center btn text-lg w-fit btn-accent">{{ counter }}</h3>
+    <div class="card-body">
+      <button @click="addCounter" class="btn btn-success">Add count!</button>
+      <button @click="removeCounter" class="btn btn-warning">Remove count!</button>
+      <button @click="resetCounter" class="btn btn-secondary">Reset count!</button>
     </div>
   </div>
 </template>
@@ -35,61 +35,4 @@ function resetCounter(): void {
 </script>
 
 <style lang="css" scoped>
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  gap: 5px;
-}
-
-.sub-container {
-  display: flex;
-  gap: 10px;
-}
-
-.count {
-  padding: 10px;
-  font-size: 16px;
-  background: #000;
-  color: white;
-  border: 1px solid white;
-  border-radius: 10px;
-}
-
-.btn {
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid rgb(36, 35, 35);
-}
-
-.add {
-  background: #52b302;
-  color: white;
-}
-
-.add:hover {
-  background: #52b302c5;
-  color: white;
-}
-
-.remove {
-  background: #de0505;
-  color: black;
-}
-
-.remove:hover {
-  background: #de0505b9;
-  color: black;
-}
-
-.reset {
-  background: #d2bd00;
-  color: black;
-}
-
-.reset:hover {
-  background: #d2bd00ac;
-  color: black;
-}
 </style>

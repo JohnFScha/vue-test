@@ -30,6 +30,7 @@
     "@vue/cli-plugin-typescript": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "daisyui": "^4.12.14",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^4.2.1",
