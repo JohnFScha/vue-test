@@ -1,10 +1,10 @@
 <template>
-  <div class="flex flex-col items-center p-2 text-center">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
+  <section class="flex flex-col items-center p-2 text-center min-h-screen">
+    <CharacterComponent />
+  </section>
 </template>
 
 <script lang="ts" setup>
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import CharacterComponent from '@/components/CharacterComponent.vue';
+
 </script>

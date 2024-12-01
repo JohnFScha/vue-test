@@ -19,7 +19,7 @@ async function getCharactersAPI(offset: number): Promise<Result[] | []> {
   }
 }
 
-async function getCharacterByIdAPI(id: string): Promise<CharacterResult | Record<string, string | number>> {
+async function getCharacterByIdAPI(id: string): Promise<CharacterResult | undefined> {
   try {
     const response = await fetch(`http://gateway.marvel.com/v1/public/characters/${id}?apikey=${API_KEY}`);
     if (!response.ok) {
@@ -29,7 +29,6 @@ async function getCharacterByIdAPI(id: string): Promise<CharacterResult | Record
     return data.data.results[0];
   } catch (error) {
     console.error("Error fetching characters:", error);
-    return {};
   }
 }
 

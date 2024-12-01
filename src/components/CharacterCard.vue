@@ -20,9 +20,9 @@
         <p class="py-4">Press ESC key or click the button below to close</p>
 
         <!-- Render Comics List -->
-        <div v-if="comics.length > 0">
+        <div v-if="store.comics.length > 0">
           <ul class="flex flex-col gap-5">
-            <li v-for="comic in comics" :key="comic.id" class="flex gap-2">
+            <li v-for="comic in store.comics" :key="comic.id" class="flex gap-2">
               <img :src="comic.thumbnail.path + '.' + comic.thumbnail.extension" :alt="comic.title"
                 class="w-1/2 rounded-lg" />
               <div class="flex flex-col text-justify justify-between">
@@ -53,9 +53,9 @@
 
 <script lang="ts" setup>
 import { PropType, ref, defineProps } from 'vue';
-import { ResultComics } from '@/types/comics';
 import { Result } from '@/types/characters';
-import { searchComicByCharacterIdAPI } from '@/api'; // Adjust with correct import path
+import { useCharacterStore } from '@/store';
+const store = useCharacterStore();
 
 // Props
 defineProps({
@@ -70,22 +70,13 @@ defineProps({
 
 // Refs
 const modalRef = ref<HTMLDialogElement | null>(null); // Reference to modal
-const comics = ref<ResultComics[]>([]); // Comics data
 
 // Open Modal and Fetch Comics
 const openModal = async (characterId: string | undefined) => {
   if (modalRef.value) {
     modalRef.value.showModal(); // Show the modal
-    await fetchComics(characterId!); // Fetch comics for the character
+    await store.fetchComics(characterId!); // Fetch comics for the character
   }
 };
 
-// Fetch Comics for the Character
-const fetchComics = async (characterId: string) => {
-  try {
-    comics.value = await searchComicByCharacterIdAPI(characterId); // Fetch comics from API
-  } catch (error) {
-    console.error('Error fetching comics:', error);
-  }
-};
 </script>
