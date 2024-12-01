@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Scrollbar styling for WebKit browsers (Chrome, Safari, Edge) */
+*::-webkit-scrollbar {
+  width: 12px !important; /* Scrollbar width */
+  height: 12px !important; /* Scrollbar height for horizontal bars */
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #ED1D24 !important; /* Marvel's red color */
+  border-radius: 10px !important; /* Rounded scrollbar */
+}
+
+*::-webkit-scrollbar-track {
+  background: #f0f0f0 !important; /* Light gray background track */
+  border-radius: 10px !important;
+}
+
+/* For Firefox browsers */
+* {
+  scrollbar-width: thin !important; /* Thin scrollbar */
+  scrollbar-color: #ED1D24 #f0f0f0 !important; /* Thumb color and track color */
+}

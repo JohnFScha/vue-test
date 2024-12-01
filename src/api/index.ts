@@ -1,12 +1,13 @@
+import { CharacterResult } from "@/types/character";
 import { Result } from "@/types/characters";
 import { ResultComics } from "@/types/comics";
 
 const API_BASE_URL = process.env.VUE_APP_BASE_URL;
 const API_KEY = process.env.VUE_APP_API_KEY;
 
-async function getCharactersAPI(): Promise<Result[] | []> {
+async function getCharactersAPI(offset: number): Promise<Result[] | []> {
   try {
-    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?apikey=${API_KEY}`);
+    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?limit=9&offset=${offset}&apikey=${API_KEY}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -15,6 +16,20 @@ async function getCharactersAPI(): Promise<Result[] | []> {
   } catch (error) {
     console.error("Error fetching characters:", error);
     return [];
+  }
+}
+
+async function getCharacterByIdAPI(id: string): Promise<CharacterResult | Record<string, string | number>> {
+  try {
+    const response = await fetch(`http://gateway.marvel.com/v1/public/characters/${id}?apikey=${API_KEY}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.data.results[0];
+  } catch (error) {
+    console.error("Error fetching characters:", error);
+    return {};
   }
 }
 
@@ -63,6 +78,7 @@ async function searchByNameAPI(name: string): Promise<Result[] | []> {
 
 export {
   getCharactersAPI,
+  getCharacterByIdAPI,
   searchByNameAPI,
   searchComicByCharacterIdAPI,
   searchComicByIdAPI

@@ -5,24 +5,19 @@
     </router-link>
     <hr class="h-[40px] w-[1px] bg-base-300/50">
     <nav class="w-full">
-      <input v-model="searchQuery" @input="handleInput" placeholder="Search characters by name" class="input bg-white placeholder:text-black/50 w-full px-3"/>
+      <input v-model="store.searchQuery" @input="searchAndRedirect" placeholder="Search characters by name" class="input bg-white placeholder:text-black/50 w-full px-3"/>
     </nav>
   </header>
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits } from "vue";
+import { useCharacterStore } from '@/store';
+import { useRouter } from 'vue-router';
+const store = useCharacterStore();
+const router = useRouter();
 
-const searchQuery = ref("");
-const emit = defineEmits(["updateCharacters"]);
-
-function handleInput() {
-  emit("updateCharacters", searchQuery.value);
+function searchAndRedirect() {
+  router.push('/'); // Navigate to home view
+  store.refreshCharacterList(store.searchQuery); // Update the character list
 }
 </script>
-
-<style scoped>
-header {
-  box-shadow: 2px 2px 2px black !important;
-}
-</style>
