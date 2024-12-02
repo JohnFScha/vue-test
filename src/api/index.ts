@@ -7,7 +7,7 @@ const API_KEY = process.env.VUE_APP_API_KEY;
 
 async function getTotalPages(): Promise<number | undefined> {
   try {
-    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?&apikey=${API_KEY}`);
+    const response = await fetch(`${API_BASE_URL}/characters?&apikey=${API_KEY}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -20,7 +20,7 @@ async function getTotalPages(): Promise<number | undefined> {
 
 async function getCharactersAPI(offset: number): Promise<Result[] | []> {
   try {
-    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?limit=9&offset=${offset}&apikey=${API_KEY}`);
+    const response = await fetch(`${API_BASE_URL}/characters?limit=9&offset=${offset}&apikey=${API_KEY}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -34,7 +34,7 @@ async function getCharactersAPI(offset: number): Promise<Result[] | []> {
 
 async function getCharacterByIdAPI(id: string): Promise<CharacterResult | undefined> {
   try {
-    const response = await fetch(`http://gateway.marvel.com/v1/public/characters/${id}?apikey=${API_KEY}`);
+    const response = await fetch(`${API_BASE_URL}/characters/${id}?apikey=${API_KEY}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
