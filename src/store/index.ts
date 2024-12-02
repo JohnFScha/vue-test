@@ -1,4 +1,4 @@
-import { getCharacterByIdAPI, getCharactersAPI, getTotalPages, searchByNameAPI, searchComicByCharacterIdAPI } from '@/api';
+import { getCharacterByIdAPI, getCharactersAPI, getTotalPages, searchByNameAPI, searchComicByCharacterIdAPI, searchComicByIdAPI } from '@/api';
 import { CharacterResult } from '@/types/character';
 import { Result } from '@/types/characters';
 import { ResultComics } from '@/types/comics';
@@ -9,6 +9,7 @@ export const useCharacterStore = defineStore('characters', () => {
   const characters = ref<Result[]>([]); // Holds the list of characters
   const character = ref<CharacterResult>(); // Holds the list of characters
   const comics = ref<ResultComics[]>([]); // Holds the list of characters
+  const comic = ref<ResultComics>(); // Holds the list of characters
   const searchQuery = ref(''); // Current search query
   const offset = ref(0); // Current pagination offset
   const totalPages = ref<number | undefined>(0)
@@ -48,6 +49,17 @@ export const useCharacterStore = defineStore('characters', () => {
       console.error("Error fetching comics:", error);
     } finally {
       loadingComics.value = false
+    }
+  }
+
+  async function fetchComicById(comicId: string) {
+    loading.value = true
+    try {
+      comic.value = await searchComicByIdAPI(comicId); // Fetch with updated offset
+    } catch (error) {
+      console.error("Error fetching comics:", error);
+    } finally {
+      loading.value = false
     }
   }
 
@@ -95,5 +107,15 @@ export const useCharacterStore = defineStore('characters', () => {
     localStorage.setItem('favorites', JSON.stringify(favorites.value));
   }
 
-  return { favorites, addFavorite, removeFavorite, loading, loadingComics, characters, comics, character, totalPages, searchQuery, offset, changeOffset, fetchCharacters, fetchCharacter, fetchComics, fetchTotalPages, refreshCharacterList };
+  return { favorites, addFavorite, removeFavorite, loading, loadingComics, characters, comics, comic, character, totalPages, searchQuery, offset, changeOffset, fetchCharacters, fetchCharacter, fetchComics, fetchTotalPages, refreshCharacterList, fetchComicById };
 });
+
+export const useWindowWidth = defineStore('window', () => {
+  const windowWidth = ref(window.innerWidth);
+
+  function updateWidth()  {
+    windowWidth.value = window.innerWidth;
+  }
+
+  return {windowWidth, updateWidth}
+})

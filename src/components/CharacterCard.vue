@@ -1,18 +1,32 @@
 <template>
   <article class="card shadow-md bg-white text-black shadow-black/50 rounded-lg relative">
-    <button v-if="isFavorite"  class="btn btn-ghost btn-circle absolute top-1 right-1" @click="store.removeFavorite(character!.id)"><HeartCrack :fill="'red'" :size="35" /></button>
-    <button v-if="!isFavorite" class="btn btn-ghost btn-circle absolute top-1 right-1" @click="store.addFavorite(character!)"><Heart :size="35" /></button>
+    <button v-if="isFavorite" class="btn btn-ghost btn-circle absolute top-1 right-1"
+      @click="store.removeFavorite(character!.id)">
+      <HeartCrack :fill="'red'" :size="35" />
+    </button>
+    <button v-if="!isFavorite" class="btn btn-ghost btn-circle absolute top-1 right-1"
+      @click="store.addFavorite(character!)">
+      <Heart :size="35" />
+    </button>
     <figure>
       <img :src="character?.thumbnail.path + '.' + character?.thumbnail.extension" :alt="character?.name"
         class="object-cover aspect-square w-full h-full rounded-tr-lg rounded-tl-lg" />
     </figure>
     <div class="card-body gap-4 rounded-br-lg rounded-bl-lg">
       <h2 class="card-title text-2xl">{{ character?.name }}</h2>
-      <p class="text-lg" v-if="character?.description &&character?.description.length > 1">{{ character?.description.substring(0, 50) + "..." }}</p>
+      <p class="text-lg" v-if="character?.description && character?.description.length > 1">{{
+        character?.description.substring(0, 50) + "..." }}</p>
       <p class="text-lg" v-else> No description provided!</p>
       <div class="card-actions w-full p-0 flex flex-nowrap justify-evenly">
-        <router-link :to="{ name: 'CharacterView', params: {id: character!.id.toString()}}" class="w-1/2 btn btn-error text-lg">Hero details</router-link>
-        <button class="btn w-1/2 text-lg" @click="openModal(character?.id.toString())">Show comics</button>
+        <router-link v-if="windowStore.windowWidth > 400"
+          :to="{ name: 'CharacterView', params: { id: character!.id.toString() } }"
+          class="w-1/2 btn btn-error text-lg">Hero details</router-link>
+        <router-link v-else :to="{ name: 'CharacterView', params: { id: character!.id.toString() } }"
+          class="w-1/2 btn btn-error text-lg">Details</router-link>
+        <button v-if="windowStore.windowWidth > 400" class="btn w-1/2 text-lg"
+          @click="openModal(character?.id.toString())">Show
+          comics</button>
+        <button v-else class="btn w-1/2 text-lg" @click="openModal(character?.id.toString())">Comics</button>
       </div>
     </div>
 
@@ -23,7 +37,7 @@
         <p class="py-4">Press ESC key or click the button below to close</p>
 
         <!-- Render Comics List -->
-        <div v-if="store.comics.length > 0" >
+        <div v-if="store.comics.length > 0">
           <ul class="flex flex-col gap-5">
             <li v-for="comic in store.comics" :key="comic.id" class="flex gap-2">
               <img :src="comic.thumbnail.path + '.' + comic.thumbnail.extension" :alt="comic.title"
@@ -35,7 +49,10 @@
                     comic.description?.substring(0, 150) }}...</p>
                   <p v-else class="text-base">No decription provided!</p>
                 </div>
-                <router-link :to="{ name: 'ComicView', params: { id: comic.id } }" class="btn btn-error text-white text-lg font-bold">Comic details!</router-link>
+                <router-link v-if="windowStore.windowWidth > 400" :to="{ name: 'ComicView', params: { id: comic.id } }"
+                  class="btn btn-error text-white text-lg font-bold">Comic details!</router-link>
+                <router-link v-else :to="{ name: 'ComicView', params: { id: comic.id } }"
+                  class="btn btn-error text-white text-lg font-bold">Details</router-link>
               </div>
             </li>
           </ul>
@@ -58,12 +75,13 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, ref, defineProps, computed } from 'vue';
+import { PropType, ref, defineProps, computed, onMounted, onUnmounted } from 'vue';
 import { Result } from '@/types/characters';
-import { useCharacterStore } from '@/store';
+import { useCharacterStore, useWindowWidth } from '@/store';
 import { Heart, HeartCrack } from 'lucide-vue-next'
 import LoaderSpinner from './LoaderSpinner.vue';
 const store = useCharacterStore();
+const windowStore = useWindowWidth();
 
 // Props
 const props = defineProps({
@@ -81,6 +99,14 @@ const modalRef = ref<HTMLDialogElement | null>(null); // Reference to modal
 const isFavorite = computed(() =>
   store.favorites.some((fav) => fav.id === props.character?.id)
 );
+
+onMounted(() => {
+  window.addEventListener('resize', windowStore.updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', windowStore.updateWidth);
+});
 
 const openModal = async (characterId: string | undefined) => {
   if (modalRef.value) {

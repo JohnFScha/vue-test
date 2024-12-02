@@ -1,7 +1,7 @@
 <template>
   <HeaderComponent />
   <router-view class="bg-white" />
-  <footer class="w-full flex justify-center bg-white border border-base-100/50 text-red-600 font-bold py-10">
+  <footer class="w-full flex justify-center bg-white text-red-600 font-bold py-10">
     Data provided by Marvel. © 2024 MARVEL
   </footer>
 </template>

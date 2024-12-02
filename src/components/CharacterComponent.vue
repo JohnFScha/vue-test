@@ -1,8 +1,8 @@
 <template>
   <section v-if="store.character?.name"
-    class="flex flex-col items-start gap-5 p-5 border bg-base-100/20 border-black/50 rounded-lg text-base-300">
+    class="flex flex-col items-start gap-5 p-6 shadow-lg shadow-black/50 rounded-lg text-base-300">
     <h3 class="text-4xl font-bold italic">{{ store.character?.name }}</h3>
-    <article class="grid grid-cols-1 md:grid-cols-2 gap-5 ">
+    <article class="grid grid-cols-1 md:grid-cols-2 gap-10 ">
       <CharacterThumbnail :thumbnail="store.character.thumbnail" :name="store.character.name" />
       <div class="flex flex-col gap-2">
         <CharacterComics :comics="store.character.comics" />

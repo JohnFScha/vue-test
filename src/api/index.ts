@@ -1,6 +1,6 @@
 import { CharacterResult } from "@/types/character";
 import { Response, Result } from "@/types/characters";
-import { ResultComics } from "@/types/comics";
+import { ResponseComics, ResultComics } from "@/types/comics";
 
 const API_BASE_URL = process.env.VUE_APP_BASE_URL;
 const API_KEY = process.env.VUE_APP_API_KEY;
@@ -45,17 +45,16 @@ async function getCharacterByIdAPI(id: string): Promise<CharacterResult | undefi
   }
 }
 
-async function searchComicByIdAPI(id: string): Promise<Result[] | []> {
+async function searchComicByIdAPI(id: string): Promise<ResultComics | undefined> {
   try {
     const response = await fetch(`${API_BASE_URL}/comics/${id}?apikey=${API_KEY}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const data = await response.json();
-    return data.data.results;
+    const data: ResponseComics = await response.json();
+    return data.data.results[0];
   } catch (error) {
     console.error("Error searching comic by ID:", error);
-    return [];
   }
 }
 

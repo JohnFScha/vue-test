@@ -1,9 +1,11 @@
 <template>
-  <section class="min-h-screen flex justify-center items-center">
-    <p class="text-2xl">LALALALA</p>
+  <section class="flex justify-center items-center p-5">
+    <ComicComponent />
   </section>
 </template>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import ComicComponent from '@/components/ComicComponent.vue';
+</script>
 
 <style scoped></style>

@@ -1,8 +1,8 @@
 <template>
   <nav class="pagination">
     <!-- First Page -->
-    <button :disabled="currentPage === 1" @click="goToPage(1)" class="btn btn-square bg-base-100 text-white hover:bg-black/75"
-      title="First page">
+    <button :disabled="currentPage === 1" @click="goToPage(1)"
+      class="btn btn-square bg-base-100 text-white hover:bg-black/75" title="First page">
       <ChevronFirst :size="35" />
     </button>
 
@@ -13,11 +13,19 @@
     </button>
 
     <!-- Page Numbers -->
-    <span v-for="page in visiblePages" :key="page">
-      <button :class="{ active: currentPage === page }" @click="goToPage(page)" class="btn btn-circle btn-error">
-        {{ page }}
+    <div v-if="windowStore.windowWidth > 400">
+      <span v-for="page in visiblePages" :key="page">
+        <button :class="{ active: currentPage === page }" @click="goToPage(page)" class="btn btn-circle btn-error mx-1">
+          {{ page }}
+        </button>
+      </span>
+    </div>
+
+    <div v-else>
+      <button class="btn btn-circle btn-error">
+        {{ currentPage }}
       </button>
-    </span>
+    </div>
 
     <!-- Next Page -->
     <button :disabled="currentPage === totalPages" @click="goToPage(currentPage + 1)"
@@ -34,11 +42,11 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, defineProps, defineEmits } from "vue";
-import { useCharacterStore } from "@/store";
+import { computed, defineProps, defineEmits, onMounted, onUnmounted } from "vue";
+import { useCharacterStore, useWindowWidth } from "@/store";
 import { ChevronFirst, ChevronLast, ChevronRight, ChevronLeft } from 'lucide-vue-next'
 const store = useCharacterStore();
-
+const windowStore = useWindowWidth();
 // Props
 const props = defineProps({
   offset: {
@@ -68,7 +76,15 @@ const visiblePages = computed(() => {
     pages.push(i);
   }
   return pages;
-});
+})
+
+onMounted(() => {
+  window.addEventListener('resize', windowStore.updateWidth);
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', windowStore.updateWidth);
+})
 
 // Handlers
 function goToPage(page: number) {

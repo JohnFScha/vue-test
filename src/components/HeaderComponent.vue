@@ -5,7 +5,7 @@
     </router-link>
     <hr class="h-[40px] w-[1px] bg-base-300/50">
     <nav class="w-full">
-      <input v-model="store.searchQuery" @input="searchAndRedirect" placeholder="Search characters by name" class="input bg-white placeholder:text-black/50 w-full px-3"/>
+      <input v-model="store.searchQuery" @input="searchAndRedirect" placeholder="Search by name" class="input bg-white placeholder:text-black/50 w-full px-3"/>
     </nav>
     <router-link to="/favorites">
       <Star :size="40" :fill="'black'" :color="'black'" />

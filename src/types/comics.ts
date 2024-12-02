@@ -1,4 +1,4 @@
-export interface Response {
+export interface ResponseComics {
   code:            number;
   status:          string;
   copyright:       string;
