@@ -9,8 +9,6 @@
 <script setup>
 import './assets/tailwind.css'
 import HeaderComponent from './components/HeaderComponent.vue';
-
-console.log(process.env)
 </script>
 
 <style>

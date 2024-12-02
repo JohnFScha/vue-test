@@ -82,8 +82,6 @@ const isFavorite = computed(() =>
   store.favorites.some((fav) => fav.id === props.character?.id)
 );
 
-console.log(isFavorite.value)
-
 const openModal = async (characterId: string | undefined) => {
   if (modalRef.value) {
     modalRef.value.showModal(); // Show the modal
