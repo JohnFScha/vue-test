@@ -1,9 +1,22 @@
 import { CharacterResult } from "@/types/character";
-import { Result } from "@/types/characters";
+import { Response, Result } from "@/types/characters";
 import { ResultComics } from "@/types/comics";
 
 const API_BASE_URL = process.env.VUE_APP_BASE_URL;
 const API_KEY = process.env.VUE_APP_API_KEY;
+
+async function getTotalPages(): Promise<number | undefined> {
+  try {
+    const response = await fetch(`http://gateway.marvel.com/v1/public/characters?&apikey=${API_KEY}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data: Response = await response.json();
+    return data.data.total
+  } catch (error) {
+    console.error("Error fetching characters:", error);
+  }
+}
 
 async function getCharactersAPI(offset: number): Promise<Result[] | []> {
   try {
@@ -76,6 +89,7 @@ async function searchByNameAPI(name: string): Promise<Result[] | []> {
 }
 
 export {
+  getTotalPages,
   getCharactersAPI,
   getCharacterByIdAPI,
   searchByNameAPI,

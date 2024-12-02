@@ -1,8 +1,8 @@
 <template>
   <div>
-    <h2>Stories</h2>
-    <ul>
-      <li v-for="story in stories.items" :key="story.resourceURI">
+    <h2 class="text-start text-2xl italic font-bold">Stories</h2>
+    <ul class="flex flex-col items-start">
+      <li class="list-disc text-lg" v-for="story in stories.items" :key="story.resourceURI">
         {{ story.name }} ({{ story.type }})
       </li>
     </ul>

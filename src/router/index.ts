@@ -2,15 +2,18 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import CharactersView from "@/views/CharactersView.vue";
 import CharacterView from "@/views/CharacterView.vue";
 import ComicView from "@/views/ComicView.vue";
+import FavoriteView from "@/views/FavoriteView.vue";
   
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "CharactersList",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: CharactersView
+  },
+  {
+    path: "/favorites",
+    name: "FavoriteView",
+    component: FavoriteView
   },
   {
     path: "/comic/:id",
@@ -20,9 +23,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/character/:id",
     name: "CharacterView",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: CharacterView
   },
 ];

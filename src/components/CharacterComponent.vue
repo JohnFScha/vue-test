@@ -1,9 +1,10 @@
 <template>
-  <section v-if="store.character?.name" class="flex flex-col items-start gap-5 p-5 border border-white/50 rounded-md">
-    <h3 class="text-3xl italic">{{ store.character?.name }}</h3>
-    <article class="flex justify-around gap-5">
-      <CharacterThumbnail :thumbnail="store.character.thumbnail" :name="store.character.name" class="w-1/3"/>
-      <div class="grid grid-cols-2 items-start gap-5 w-2/3">
+  <section v-if="store.character?.name"
+    class="flex flex-col items-start gap-5 p-5 border bg-base-100/20 border-black/50 rounded-lg text-base-300">
+    <h3 class="text-4xl font-bold italic">{{ store.character?.name }}</h3>
+    <article class="grid grid-cols-1 md:grid-cols-2 gap-5 ">
+      <CharacterThumbnail :thumbnail="store.character.thumbnail" :name="store.character.name" />
+      <div class="flex flex-col gap-2">
         <CharacterComics :comics="store.character.comics" />
         <CharacterSeries :series="store.character.series" />
         <CharacterStories :stories="store.character.stories" />
@@ -12,7 +13,6 @@
     </article>
   </section>
   <div v-else>Loading...</div>
-
 </template>
 
 <script lang="ts" setup>
@@ -32,7 +32,4 @@ onMounted(async () => {
   const id = params.params.id.toString()
   store.fetchCharacter(id)
 })
-
 </script>
-
-<style scoped></style>

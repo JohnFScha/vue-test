@@ -1,57 +1,50 @@
 <template>
-  <section class="flex items-center gap-x-3">
-    <!-- Previous Page Button -->
-    <button class="btn btn-circle" @click="goToPreviousPage" :disabled="store.offset === 0">
-      <CircleArrowLeft :size="50" />
-    </button>
+  <PaginationComponent :offset="store.offset" :sibling-count="siblingCount" @update:offset="updateOffset"
+    class="pb-5" />
 
+  <section v-if="!store.loading" class="flex flex-col items-center gap-5">
     <!-- Character Cards -->
-    <ul v-if="characters.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-      <CharacterCard v-for="(character, index) in characters" :key="character.id" :index="index.toString()"
-        :character="character" />
+    <ul v-if="store.characters.length > 0" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+      <CharacterCard v-for="(character, index) in store.characters" :key="character.id" :index="index.toString()" :character="character" />
     </ul>
 
     <!-- Fallback Message -->
-    <ul v-else class="container">
+    <ul v-else class="min-h-screen flex items-center justify-center">
       <li class="card">
-        <h3>No characters found...</h3>
+        <h3 class="text-5xl font-bold">No characters found...</h3>
       </li>
     </ul>
 
-    <!-- Next Page Button -->
-    <button class="btn btn-circle" @click="goToNextPage">
-      <CircleArrowRight :size="50" />
-    </button>
+  </section>
+  <section v-else class=" min-h-screen flex justify-center items-center">
+    <LoaderSpinner />
   </section>
 </template>
 
 
 <script lang="ts" setup>
-import { computed, onMounted } from 'vue';
-import { CircleArrowLeft, CircleArrowRight } from 'lucide-vue-next';
-import CharacterCard from './CharacterCard.vue';
+import { onMounted, ref } from 'vue';
 import { useCharacterStore } from '@/store';
+
+import CharacterCard from './CharacterCard.vue';
+import PaginationComponent from './PaginationComponent.vue';
+import LoaderSpinner from './LoaderSpinner.vue';
 
 // Access the character store
 const store = useCharacterStore();
 
-// Computed Characters (reactive from the store)
-const characters = computed(() => store.characters);
+const siblingCount = ref(2); // Number of sibling pages to display
 
 // Fetch initial data on component mount
-onMounted(() => {
-  store.fetchCharacters();
+onMounted(async () => {
+  await store.fetchCharacters();
+  await store.fetchTotalPages();
 });
 
-// Pagination Handlers
-function goToPreviousPage() {
-  if (store.offset > 0) {
-    store.changeOffset(store.offset - 9); // Adjust per API's page size
-  }
-}
 
-function goToNextPage() {
-  store.changeOffset(store.offset + 9); // Adjust per API's page size
+// Update offset
+function updateOffset(newOffset: number) {
+  store.offset = newOffset;
+  store.fetchCharacters(); // Fetch new data when offset changes
 }
 </script>
-
